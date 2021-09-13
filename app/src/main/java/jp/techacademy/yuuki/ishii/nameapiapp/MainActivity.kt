@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
                 id = shop.id
                 name = shop.name
                 imageUrl = shop.logoImage
-//            address = shop.address
+            address = shop.address
                 url = if(shop.couponUrls.sp.isNotEmpty()){
                     shop.couponUrls.sp
                 } else shop.couponUrls.pc

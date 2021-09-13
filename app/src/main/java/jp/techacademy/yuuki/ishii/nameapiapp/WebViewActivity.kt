@@ -14,14 +14,21 @@ class WebViewActivity: AppCompatActivity() {
     //Favoriteshopのインスタンスを作成
     private var favoriteShop: FavoriteShop = FavoriteShop()
 
+
     private var isFavorite = false
         set(value) {
         if (field == value)
             return
         field = value
-        updateFavorite(value)
+/*            favoriteShop.id = intent.getStringExtra(KEY_FAVORITESHOP_ID).toString()
+            favoriteShop.name = intent.getStringExtra(KEY_FAVORITESHOP_NAME).toString()
+            favoriteShop.imageUrl = intent.getStringExtra(KEY_FAVORITESHOP_IMAGEURL).toString()
+            favoriteShop.url = intent.getStringExtra(KEY_FAVORITESHOP_URL).toString()
+            favoriteShop.address = intent.getStringExtra(KEY_FAVORITESHOP_ADDRESS).toString()
+ */       updateFavorite(value)
         invalidateOptionsMenu()
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +38,15 @@ class WebViewActivity: AppCompatActivity() {
         webView.loadUrl(intent.getStringExtra(KEY_FAVORITESHOP_URL).toString())
         //20210911　favoriteshopが型が違うため直接投げれないので、errorが発生
 //        favoriteShop = intent.getSerializableExtra(KEY_FAVORITESHOP) as? FavoriteShop ?: return { finish() }()
-
+        favoriteShop.id = intent.getStringExtra(KEY_FAVORITESHOP_ID).toString()
+        favoriteShop.name = intent.getStringExtra(KEY_FAVORITESHOP_NAME).toString()
+        favoriteShop.imageUrl = intent.getStringExtra(KEY_FAVORITESHOP_IMAGEURL).toString()
+        favoriteShop.url = intent.getStringExtra(KEY_FAVORITESHOP_URL).toString()
+        favoriteShop.address = intent.getStringExtra(KEY_FAVORITESHOP_ADDRESS).toString()
 //        webView.loadUrl(KEY_FAVORITESHOP_URL)
         //findby(id)
 
-        isFavorite = FavoriteShop.findBy(KEY_FAVORITESHOP_ID) != null
+        isFavorite = FavoriteShop.findBy(favoriteShop.id) != null
     }
 
     //メニューバーに星を表示させる
@@ -64,13 +75,13 @@ class WebViewActivity: AppCompatActivity() {
             //20210911ここでエラーが出ているみたい
             FavoriteShop.insert(favoriteShop)
         else
-            FavoriteShop.delete(KEY_FAVORITESHOP_ID)
+            FavoriteShop.delete(favoriteShop.id)
     }
 
     companion object {
         private const val KEY_URL = "key_url"
         private const val KEY_FAVORITESHOP = "key_favoriteshop"
-        private const val KEY_FAVORITESHOP_NAME = "key_favoriteshop_name"
+        private const val KEY_FAVORITESHOP_NAME = ""
         private const val KEY_FAVORITESHOP_ID = "key_favoriteshop_id"
         private const val KEY_FAVORITESHOP_IMAGEURL = "key_favoriteshop_imageUrl"
         private const val KEY_FAVORITESHOP_URL = "key_favoriteshop_Url"
@@ -87,6 +98,8 @@ class WebViewActivity: AppCompatActivity() {
                     .putExtra(KEY_FAVORITESHOP_URL, favoriteShop.url)
                     .putExtra(KEY_FAVORITESHOP_ADDRESS, favoriteShop.address)
             )
+
+
         }
 
         fun start(activity: Activity, shop: Shop) {
